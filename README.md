@@ -32,18 +32,7 @@ O projeto segue uma arquitetura em camadas para uma clara separação de respons
 
 ### Estrutura de Diretórios
 
-📦 shopping-cart-service/
-├── src/main/java/com/seu_dominio/shoppingcartservice/
-│   ├── config/             # Configurações do Spring (ex: WebConfig para interceptors)
-│   ├── controller/         # Camada de API (Endpoints REST)
-│   ├── domain/             # Entidades principais (Cart, CartItem)
-│   ├── dto/                # Data Transfer Objects (para requests/responses)
-│   ├── repository/         # Camada de acesso a dados (Redis)
-│   ├── security/           # Interceptor para validação de JWT
-│   └── service/            # Camada de lógica de negócio
-├── src/main/resources/
-│   └── application.properties # Ficheiro de configuração
-└── pom.xml                 # Definições do projeto Maven
+<img width="605" height="257" alt="image" src="https://github.com/user-attachments/assets/9c43d165-4f51-498e-9dd8-c5ed10241aba" />
 
 ## 📜 Contratos da API
 
