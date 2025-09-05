@@ -19,9 +19,11 @@ public class Cart {
 	@Id
 	private String userId;
 	
+	@Builder.Default
 	private Map<String, CartItem> items = new HashMap<>();
 	
 	@TimeToLive(unit = TimeUnit.DAYS)
+	@Builder.Default
 	private Long expiration = 7L;
 	
 	
