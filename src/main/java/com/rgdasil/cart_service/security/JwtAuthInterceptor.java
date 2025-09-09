@@ -2,6 +2,9 @@ package com.rgdasil.cart_service.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +27,9 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 	private String internalApiKey;
 
 	private final RestTemplate restTemplate;
-	
+
+	private static final Logger log = LoggerFactory.getLogger(JwtAuthInterceptor.class);
+
 	public JwtAuthInterceptor(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
@@ -59,12 +64,14 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
 			if (authResponseEntity.getStatusCode().is2xxSuccessful() && authResponse != null
 					&& authResponse.isValid()) {
+				log.info("Token valid for userId: {}", authResponse.getUserId());
+				
 				// Se o token for válido, anexa o userId à requisição para o controller usar
 				request.setAttribute("userId", authResponse.getUserId());
 				return true; // Permite que a requisição continue
 			}
 		} catch (Exception e) {
-			System.err.println("Error validating token: " + e.getMessage());
+			log.error("Error validating token: " + e.getMessage());
 		}
 
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
