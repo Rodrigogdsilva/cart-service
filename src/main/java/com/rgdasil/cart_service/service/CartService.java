@@ -9,7 +9,10 @@ import com.rgdasil.cart_service.dto.AddItemRequest;
 import com.rgdasil.cart_service.dto.ProductDTO;
 import com.rgdasil.cart_service.exception.CartNotFoundException;
 import com.rgdasil.cart_service.exception.ProductNotFoundException;
+import com.rgdasil.cart_service.exception.ServiceUnavailableException;
 import com.rgdasil.cart_service.repository.CartRepository;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Service
 public class CartService {
@@ -23,6 +26,7 @@ public class CartService {
 		this.productServiceClient = productServiceClient;
 	}
 
+	@CircuitBreaker(name = "productService", fallbackMethod = "getProductFallback")
 	public Cart addItemToCart(String userId, AddItemRequest addItemRequest) {
 
 		String productId = addItemRequest.getProductId();
@@ -56,5 +60,9 @@ public class CartService {
 	
 	public void deleteCart(String userId) {
 		cartRepository.deleteById(userId);
+	}
+	
+	public Cart getProductFallback(String userId, AddItemRequest addItemRequest, Throwable t) {
+		throw new ServiceUnavailableException("Product service is currently unavailable. Please try again later.");
 	}
 }
