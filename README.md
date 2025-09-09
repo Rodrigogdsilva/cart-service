@@ -80,14 +80,14 @@ Este serviço foi desenhado para ser executado como parte de um ambiente Docker 
     ```
 
 3.  **Atualize o `docker-compose.yml` Principal:**
-    No `docker-compose.yml` da raiz do seu e-commerce, adicione os serviços para o `shopping-cart-service` e o `redis`.
+    No `docker-compose.yml` da raiz do seu e-commerce, adicione os serviços para o `cart-service` e o `redis`.
     ```yaml
     services:
       # ... (serviços do auth-service)
 
       # Serviço do Carrinho de Compras (Java)
       shopping-cart-app:
-        build: ./shopping-cart-service # Caminho para a pasta do projeto Java
+        build: ./cart-service # Caminho para a pasta do projeto Java
         container_name: shopping-cart-app
         ports:
           - "8082:8082"
