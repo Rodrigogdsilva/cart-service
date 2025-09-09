@@ -23,7 +23,11 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 	@Value("${service.internal.api-key}")
 	private String internalApiKey;
 
-	private final RestTemplate restTemplate = new RestTemplate();
+	private final RestTemplate restTemplate;
+	
+	public JwtAuthInterceptor(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)

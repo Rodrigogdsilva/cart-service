@@ -10,9 +10,13 @@ import com.rgdasil.cart_service.security.JwtAuthInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-	@Autowired
 	private JwtAuthInterceptor jwtAuthInterceptor;
-
+	
+	@Autowired
+	public WebConfig(JwtAuthInterceptor jwtAuthInterceptor) {
+		this.jwtAuthInterceptor = jwtAuthInterceptor;
+	}
+	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtAuthInterceptor).addPathPatterns("/cart/**");
