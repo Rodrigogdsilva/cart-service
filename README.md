@@ -16,7 +16,7 @@ Este serviço é um cliente do `auth-service` (Go), delegando a ele a validaçã
 * Visualizar o conteúdo completo do carrinho.
 * Limpar todos os itens do carrinho.
 * Validação de token JWT via comunicação com o `auth-service`.
-* Persistência temporária dos carrinhos em Redis.
+* Persistência temporária dos carrinhos em Redis com expiração automática.
 
 ## 🛠️ Arquitetura e Tecnologias
 
@@ -26,6 +26,7 @@ O projeto segue uma arquitetura em camadas para uma clara separação de respons
 * **Linguagem:** Java 17+
 * **Framework:** Spring Boot
 * **Persistência:** Redis (via Spring Data Redis)
+* **Testes:** JUnit 5, Mockito, Testcontainers, WireMock
 * **Build:** Maven
 * **Containerização:** Docker & Docker Compose
 * **Utilitários:** Lombok
@@ -33,6 +34,20 @@ O projeto segue uma arquitetura em camadas para uma clara separação de respons
 ### Estrutura de Diretórios
 
 <img width="605" height="257" alt="image" src="https://github.com/user-attachments/assets/9c43d165-4f51-498e-9dd8-c5ed10241aba" />
+
+## ✅ Estratégia de Testes
+
+A qualidade do código é garantida por uma cobertura de testes abrangente em diferentes camadas da aplicação.
+
+### Testes Unitários
+Camada de Serviço (CartServiceTest): As regras de negócio são testadas de forma isolada. Dependências como o CartRepository e o ProductServiceClient são mockadas com Mockito para garantir que apenas a lógica do serviço seja validada.
+
+**Camada de Segurança (JwtAuthInterceptorTest):** O interceptor de autenticação é testado contra diversos cenários, como token válido, token inválido, ausência de cabeçalho e falhas de comunicação com o serviço de autenticação, usando mocks para simular as respostas HTTP.
+
+### Testes de Integração
+**Camada de Controller (CartControllerIntegrationTests):** Utiliza @WebMvcTest para testar a camada web, focando no comportamento dos endpoints (rotas, serialização JSON, códigos de status HTTP). O CartService é mockado para que os testes do controller não dependam da lógica de negócio.
+
+**Contexto da Aplicação (CartServiceApplicationTests):** Um teste de sanidade que utiliza @SpringBootTest para garantir que o contexto completo da aplicação Spring Boot carrega sem erros, validando a configuração geral do projeto.
 
 ## 📜 Contratos da API
 
