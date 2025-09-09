@@ -14,11 +14,14 @@ import com.rgdasil.cart_service.repository.CartRepository;
 @Service
 public class CartService {
 
-	@Autowired
 	CartRepository cartRepository;
-
-	@Autowired
 	ProductServiceClient productServiceClient;
+	
+	@Autowired
+	public CartService(CartRepository cartRepository, ProductServiceClient productServiceClient) {
+		this.cartRepository = cartRepository;
+		this.productServiceClient = productServiceClient;
+	}
 
 	public Cart addItemToCart(String userId, AddItemRequest addItemRequest) {
 
