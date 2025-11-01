@@ -5,7 +5,7 @@ import com.rgdasil.cart_service.domain.Cart;
 import com.rgdasil.cart_service.domain.CartItem;
 import com.rgdasil.cart_service.dto.AddItemRequest;
 import com.rgdasil.cart_service.security.JwtAuthInterceptor;
-import com.rgdasil.cart_service.service.CartService;
+import com.rgdasil.cart_service.service.RestCartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class CartControllerIntegrationTests {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private CartService cartService;
+    private RestCartService cartService;
 
     @MockBean
     private JwtAuthInterceptor jwtAuthInterceptor;

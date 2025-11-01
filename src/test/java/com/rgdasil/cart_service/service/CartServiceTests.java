@@ -30,7 +30,7 @@ class CartServiceTest {
 
     // @InjectMocks: Cria uma instância real do CartService e injeta
     @InjectMocks
-    private CartService cartService;
+    private RestCartService cartService;
 
     private String userId;
     private String productId;

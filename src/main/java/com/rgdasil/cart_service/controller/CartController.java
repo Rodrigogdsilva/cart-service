@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rgdasil.cart_service.domain.Cart;
 import com.rgdasil.cart_service.dto.AddItemRequest;
-import com.rgdasil.cart_service.service.CartService;
+import com.rgdasil.cart_service.service.RestCartService;
 
 @RestController
 @RequestMapping("/cart")
 public class CartController {
 
 	@Autowired
-	private CartService cartService;
+	private RestCartService cartService;
 
 	@RequestMapping(value = "/test")
 	public String test() {

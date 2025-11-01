@@ -1,68 +1,14 @@
 package com.rgdasil.cart_service.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.rgdasil.cart_service.domain.Cart;
-import com.rgdasil.cart_service.domain.CartItem;
 import com.rgdasil.cart_service.dto.AddItemRequest;
-import com.rgdasil.cart_service.dto.ProductDTO;
-import com.rgdasil.cart_service.exception.CartNotFoundException;
-import com.rgdasil.cart_service.exception.ProductNotFoundException;
-import com.rgdasil.cart_service.exception.ServiceUnavailableException;
-import com.rgdasil.cart_service.repository.CartRepository;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-
-@Service
-public class CartService {
-
-	CartRepository cartRepository;
-	ProductServiceClient productServiceClient;
+public interface CartService {
 	
-	@Autowired
-	public CartService(CartRepository cartRepository, ProductServiceClient productServiceClient) {
-		this.cartRepository = cartRepository;
-		this.productServiceClient = productServiceClient;
-	}
-
-	@CircuitBreaker(name = "productService", fallbackMethod = "getProductFallback")
-	public Cart addItemToCart(String userId, AddItemRequest addItemRequest) {
-
-		String productId = addItemRequest.getProductId();
-		ProductDTO productDTO = productServiceClient.getProductById(productId)
-				.orElseThrow(() -> new ProductNotFoundException("Product ID:" + productId + " not found."));
-		
-		Cart cart = cartRepository.findById(userId)
-				.orElse(Cart.builder().userId(userId).build());
-
-		CartItem existingItem = cart.getItems().get(productId);
-
-		if (existingItem != null) {
-			existingItem.setQuantity(existingItem.getQuantity() + addItemRequest.getQuantity());
-			cart.getItems().put(productId, existingItem);
-		} else {
-			CartItem newItem = CartItem.builder()
-					.productId(productId)
-					.quantity(addItemRequest.getQuantity())
-					.productName(productDTO.getName())
-					.price(productDTO.getPrice())
-					.build();
-			cart.getItems().put(productId, newItem);
-		}
-		return cartRepository.save(cart);
-	}
+	public Cart addItemToCart(String userId, AddItemRequest addItemRequest);
 	
-	public Cart getCart(String userId) {
-		return cartRepository.findById(userId)
-				.orElseThrow(() -> new CartNotFoundException("Cart ID: " + userId + " not found"));
-	}
+	public Cart getCart(String userId);
 	
-	public void deleteCart(String userId) {
-		cartRepository.deleteById(userId);
-	}
-	
-	public Cart getProductFallback(String userId, AddItemRequest addItemRequest, Throwable t) {
-		throw new ServiceUnavailableException("Product service is currently unavailable. Please try again later.");
-	}
+	public void deleteCart(String userId);
+
 }
