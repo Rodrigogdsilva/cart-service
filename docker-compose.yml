@@ -1,0 +1,20 @@
+services:
+  shopping-cart-app:
+    build: .
+    container_name: shopping-cart-app
+    ports:
+      - "8082:8082"
+    env_file:
+      - ./.env
+    environment:
+      SPRING_DATA_REDIS_HOST: redis
+      SERVICE_AUTH_URL: http://auth-app:8081/auth/validate
+      SERVICE_PRODUCT_URL: http://product-app:8083
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
