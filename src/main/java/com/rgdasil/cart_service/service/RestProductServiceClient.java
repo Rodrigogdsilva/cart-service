@@ -77,7 +77,7 @@ public class RestProductServiceClient implements ProductServiceClient {
         }
     }
 
-    // Método Fallback para o Circuit Breaker
+    // Método Fallback
     public Optional<ProductDTO> getProductByIdFallback(String productId, Throwable t) {
         log.error("Circuit breaker fallback for getProductById triggered for ID {}: {}", productId, t.getMessage());
         throw new ServiceUnavailableException("Product service is currently unavailable. Please try again later.");
